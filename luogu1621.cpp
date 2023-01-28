@@ -1,30 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-class things
+
+bool su(int num)
 {
-public:
-    int x, y, z;
-};
-class cmp
-{
-public:
-    bool operator()(const things &a, const things &b)
+    for (int i = 2; i <= sqrt(num + 1); i++)
     {
-        return a.z < b.z;
+        if (!(num % i))
+            return 0;
     }
-};
-priority_queue<things, vector<things>, cmp> pq;
-/*并查集模板*/
+    return 1;
+}
 
 struct DSU
 {
     vector<size_t> pa, size;
-
     explicit DSU(size_t size_) : pa(size_), size(size_, 1)
     {
         iota(pa.begin(), pa.end(), 0);
     }
-
     size_t find(size_t x)
     {
         return pa[x] == x ? x : pa[x] = find(pa[x]);
@@ -40,36 +33,34 @@ struct DSU
         pa[y] = x;
         size[x] += size[y];
     }
-
     bool same(size_t x, size_t y)
     {
         return find(x) == find(y);
     }
 };
+
 int main()
 {
-    int n, m;
-    cin >> n >> m;
-    DSU dsu(2 * n);
-    for (int i = 1; i <= m; i++)
+    DSU dsu(100005);
+    int a, b, p;
+    cin >> a >> b >> p;
+
+    for (int pi = p; pi <= b; pi++)
     {
-        things tmp;
-        cin >> tmp.x >> tmp.y >> tmp.z;
-        pq.push(tmp);
-    }
-    while (!pq.empty())
-    {
-        int x = pq.top().x;
-        int y = pq.top().y;
-        if (dsu.same(x, y))
+        if (su(pi))
         {
-            cout << pq.top().z << endl;
-            return 0;
+            for (int pj = ((a + pi - 1) / pi) * pi; pj + pi <= b; pj += pi)
+            {
+                dsu.unite(pj, pj + pi);
+            }
         }
-        dsu.unite(x, y + n);
-        dsu.unite(x + n, y);
-        pq.pop();
     }
-    cout << 0 << endl;
+    set<int> s;
+    for (int i = a; i <= b; i++)
+    {
+        s.insert(dsu.find(i));
+    }
+    cout << s.size() << endl;
+
     return 0;
 }

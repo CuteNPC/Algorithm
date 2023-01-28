@@ -1,21 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-class things
-{
-public:
-    int x, y, z;
-};
-class cmp
-{
-public:
-    bool operator()(const things &a, const things &b)
-    {
-        return a.z < b.z;
-    }
-};
-priority_queue<things, vector<things>, cmp> pq;
 /*并查集模板*/
-
 struct DSU
 {
     vector<size_t> pa, size;
@@ -48,28 +33,11 @@ struct DSU
 };
 int main()
 {
-    int n, m;
-    cin >> n >> m;
-    DSU dsu(2 * n);
-    for (int i = 1; i <= m; i++)
-    {
-        things tmp;
-        cin >> tmp.x >> tmp.y >> tmp.z;
-        pq.push(tmp);
-    }
-    while (!pq.empty())
-    {
-        int x = pq.top().x;
-        int y = pq.top().y;
-        if (dsu.same(x, y))
-        {
-            cout << pq.top().z << endl;
-            return 0;
-        }
-        dsu.unite(x, y + n);
-        dsu.unite(x + n, y);
-        pq.pop();
-    }
-    cout << 0 << endl;
-    return 0;
+    DSU dsu(10);
+    dsu.unite(1, 2);
+    dsu.unite(4, 6);
+    dsu.unite(1, 6);
+    cout << dsu.same(2, 4) << endl;
+    dsu.unite(3, 5);
+    cout << dsu.same(3, 6) << endl;
 }
