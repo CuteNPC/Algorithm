@@ -124,6 +124,7 @@
         "__nullptr": "cpp",
         "__tuple": "cpp",
         "__hash_table": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "filesystem": "cpp"
     }, // 格式化时调整include的顺序（按字母排序）
 }
